@@ -27,13 +27,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	filenameRegex := regexp.MustCompile("verwijder '([[:graph:]]+)' veilig door dit bestand te verwijderen")
+	filenameRegex := regexp.MustCompile("verwijder dit bestand om '([[:graph:]]+)' veilig te verwijderen")
 	for {
 		select {
 		case ev := <-watcher.Event:
 			if ev.Mask == inotify.IN_CREATE|inotify.IN_ISDIR {
 				fmt.Println("[-] disk mounted: " + ev.Name)
-				unmountFile := filepath.Join(filepath.Dir(ev.Name), fmt.Sprintf("verwijder '%s' veilig door dit bestand te verwijderen", filepath.Base(ev.Name)))
+				unmountFile := filepath.Join(filepath.Dir(ev.Name), fmt.Sprintf("verwijder dit bestand om '%s' veilig te verwijderen", filepath.Base(ev.Name)))
 				fd, err := os.Create(unmountFile)
 				if err != nil {
 					log.Println(err)
